@@ -65,7 +65,8 @@ $ bin/ktop -mem -pods
 
 ## TODO
 
-* [ ] there is a significant discrepancy between what kubectl node describe shows and ktop
+* [ ] there is sometimes a significant discrepancy between what kubectl node describe shows and ktop
+* [ ] add usage metrics https://kubernetes.io/docs/tasks/debug-application-cluster/core-metrics-pipeline/
 * [ ] support reverse sort order
 * [ ] some filtering will likely be needed for larger clusters
   * [ ] allow filtering to only nodes and pods from a given namespace
