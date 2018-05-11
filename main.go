@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"sort"
 	"strings"
 
@@ -27,6 +28,8 @@ var (
 	nodeCapacity     = flags.Bool("cap", false, "print node capacity details (only)")
 	sortByMemory     = flags.Bool("mem", false, "sort by memory rather than cpu (requests)")
 	sortByPercentage = flags.Bool("rel", false, "sort by percentage relative to node capacity")
+	forNamespace     = flags.String("ns", "", "filter pods/nodes down to specific namespace")
+	nodesNamed       = flags.String("nodes", "", "filter pods/nodes down to nodes matching the pattern")
 )
 
 func getSorter() func([]*nodeTotals) {
@@ -65,6 +68,10 @@ func main() {
 		panic(err)
 	}
 
+	if *nodesNamed != "" {
+		*nodesNamed = "*" + strings.Trim(*nodesNamed, "*") + "*"
+	}
+
 	// Collect node info
 	totals := map[string]*nodeTotals{PENDING: pending}
 	max := 0
@@ -74,6 +81,15 @@ func main() {
 	}
 	for _, node := range nodes.Items {
 		nn := node.Name
+		if *nodesNamed != "" {
+			ok, err := filepath.Match(*nodesNamed, node.Name)
+			if err != nil {
+				panic(err)
+			}
+			if !ok {
+				continue
+			}
+		}
 		if max < len(nn) {
 			max = len(nn)
 		}
@@ -99,7 +115,7 @@ func main() {
 	}
 
 	// Collect pod totals
-	pods, err := k8s.CoreV1().Pods("").List(metav1.ListOptions{})
+	pods, err := k8s.CoreV1().Pods(*forNamespace).List(metav1.ListOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -108,10 +124,13 @@ func main() {
 		if nn == "" {
 			nn = PENDING
 		}
+		n := totals[nn]
+		if n == nil {
+			continue
+		}
 		if *showPods && max < len(pod.Name) {
 			max = len(pod.Name)
 		}
-		n := totals[nn]
 		p := getPodTotals(&pod)
 		(&n.total).Add(&p.total, &n.allocatable)
 		n.pods = append(n.pods, p)

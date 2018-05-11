@@ -138,7 +138,7 @@ func getPodTotals(pod *v1.Pod) *podTotals {
 
 func nodeList(nodes map[string]*nodeTotals) (list []*nodeTotals) {
 	for _, n := range nodes {
-		if n == pending {
+		if n == pending || len(n.pods) == 0 {
 			continue
 		}
 		list = append(list, n)

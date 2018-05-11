@@ -68,5 +68,5 @@ $ bin/ktop -mem -pods
 * [ ] there is a significant discrepancy between what kubectl node describe shows and ktop
 * [ ] support reverse sort order
 * [ ] some filtering will likely be needed for larger clusters
-  * [ ] allow filtering to only nodes and pods from a given namespace
-  * [ ] allow filtering to nodes named matching a pattern
+  * [x] allow filtering to only nodes and pods from a given namespace
+  * [x] allow filtering to nodes named matching a pattern
