@@ -69,10 +69,5 @@ $ bin/ktop -mem -pods
 * [ ] add usage metrics https://kubernetes.io/docs/tasks/debug-application-cluster/core-metrics-pipeline/
 * [ ] support reverse sort order
 * [ ] some filtering will likely be needed for larger clusters
-<<<<<<< HEAD
   * [x] allow filtering to only nodes and pods from a given namespace
   * [x] allow filtering to nodes named matching a pattern
-=======
-  * [ ] allow filtering to only nodes and pods from a given namespace
-  * [ ] allow filtering to nodes named matching a pattern
->>>>>>> 42a00c9644cb88e38cd1dca8f92b9743f279bcde
