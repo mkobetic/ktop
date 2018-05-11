@@ -144,12 +144,14 @@ func main() {
 	divider := strings.Repeat("-", max+66)
 
 	// Output results
-	fmt.Printf(format+"\n", "POD", "CPU(REQ)", "CPU(LIM)", "MEM(REQ)", "MEM(LIM)")
-	for _, p := range pending.pods {
-		fmt.Println(p.Format(format))
+	if len(pending.pods) > 0 {
+		fmt.Printf(format+"\n", "POD", "CPU(REQ)", "CPU(LIM)", "MEM(REQ)", "MEM(LIM)")
+		for _, p := range pending.pods {
+			fmt.Println(p.Format(format))
+		}
+		fmt.Println(pending.Format(format))
+		fmt.Println()
 	}
-	fmt.Println(pending.Format(format))
-	fmt.Println()
 	fmt.Printf(format+"\n", "NODE", "CPU(REQ)", "CPU(LIM)", "MEM(REQ)", "MEM(LIM)")
 	if *showPods {
 		fmt.Println(divider)
